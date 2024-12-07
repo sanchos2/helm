@@ -3,6 +3,16 @@ entries:
   mosquitto:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-07T16:50:06.184398245Z"
+    description: A Helm chart for Kubernetes
+    digest: 1ffcffab2581083f46c68f7ad08857876b032bbd8a6b332094e409dd6006ff3b
+    name: mosquitto
+    type: application
+    urls:
+    - https://github.com/sanchos2/helm/releases/download/mosquitto-0.1.2/mosquitto-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-07T15:18:49.658057602Z"
     description: A Helm chart for Kubernetes
     digest: 1dd5780fc66d9c4a4f1dda91192d14167e0a2a6bb87a938dd2a96b3bdaa7ef6b
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/sanchos2/helm/releases/download/mosquitto-0.1.0/mosquitto-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-07T15:18:49.658070096Z"
+generated: "2024-12-07T16:50:06.184415536Z"
