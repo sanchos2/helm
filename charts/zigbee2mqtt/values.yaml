@@ -1,0 +1,107 @@
+# -- override the release name
+nameOverride: null
+# -- override the name of the objects generated
+fullnameOverride: null
+customLabels: {}
+image:
+  # -- Image repository for the `zigbee2mqtt` container.
+  repository: koenkk/zigbee2mqtt
+  # -- Version for the `zigbee2mqtt` container.
+  tag: "1.42.0"
+  # -- Container pull policy
+  pullPolicy: IfNotPresent
+  # -- Container additional secrets to pull image
+  imagePullSecrets: {}
+service:
+  # -- annotations for the service created
+  annotations: {}
+  # -- type of Service to be created
+  type: LoadBalancer
+  # -- port in which the service will be listening
+  port: 8080
+statefulset:
+  storage:
+    enabled: false
+    size: 1Gi
+    # -- the name for the storage class to be used in the persistent volume claim
+    storageClassName: freenas-nfs-csi
+    existingVolume: ""
+    ## Persistent Volume selectors
+    ## https://kubernetes.io/docs/concepts/storage/persistent-volumes/#selector
+    matchLabels: {}
+    matchExpressions: {}
+  secrets:
+    # -- the name for the kubernets secret to mount as secret.yaml. This can be referenced in the config
+    # by using advanced configurations https://www.zigbee2mqtt.io/guide/configuration/frontend.html#advanced-configuration
+    name: ""
+  # -- pod dns policy
+  dnsPolicy: ClusterFirst
+  # -- CPU/Memory configuration for the pods
+  resources: {}
+#    requests:
+#      memory: 600Mi
+#      cpu: 200m
+#    limits:
+#      memory: 600Mi
+#      cpu: 200m
+  # -- Overrides the entrypoint of the container
+  command: {}
+  # -- Node taint tolerations for the pods
+  tolerations: {}
+  # -- Select specific kube node, this will allow enforcing zigbee2mqtt running
+  # only on the node with the USB adapter connected
+  nodeSelector: {}
+  # -- Configure Pods Security Context
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  # -- Configure Container Security Context
+  securityContext:
+    privileged: true
+    capabilities:
+      add: ["SYS_ADMIN"]
+  # -- Configures Container liveness probe
+  livenessProbe: {}
+#    failureThreshold: 5
+#    httpGet:
+#      path: /
+#      port: web
+#    initialDelaySeconds: 60
+#    timeoutSeconds: 10
+#    periodSeconds: 30
+  # -- Additional volumeMounts to the server main container
+  volumeMounts: []
+  #  - mountPath: /usr/local/bin/my-binary
+  #    name: custom-tools
+  #    subPath: my-binary
+  # -- Additional volumes to the server pod
+  volumes: []
+  #  - name: custom-tools
+  #    emptyDir: {}
+# -- Ingress configuration. Zigbee2mqtt does use webssockets, which is not part of the Ingress standart settings.
+# most of the popular ingresses supports them through annotations. Please check https://www.zigbee2mqtt.io/guide/installation/08_kubernetes.html
+# for examples.
+ingress:
+  # -- When enabled a new Ingress will be created
+  enabled: false
+  # -- The ingress class name for the ingress
+  ingressClassName: contour
+  # -- Additional labels for the ingres
+  labels: {}
+  # -- Ingress implementation specific (potentially) for most use cases Prefix should be ok
+  pathType: Prefix
+  # Additional annotations for the ingress. ExternalDNS, and CertManager are tipically integrated here
+  annotations: {}
+  # -- list of hosts that should be allowed for the zigbee2mqtt service
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+        - path: /api
+          pathType: ImplementationSpecific
+  # -- configuration for tls service (ig any)
+  tls:
+    - secretName: some-tls-secret
+      hosts:
+        - yourdomain.com
