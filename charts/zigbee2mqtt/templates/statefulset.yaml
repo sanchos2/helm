@@ -13,8 +13,6 @@ spec:
       app: {{ include "zigbee2mqtt.fullname" . }}
   template:
     metadata:
-      annotations:
-        checksum/configuration: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
         {{- include "zigbee2mqtt.labels" . | nindent 8 }}
         app: {{ include "zigbee2mqtt.fullname" . }}
@@ -54,14 +52,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: TZ
-              value: {{ .Values.zigbee2mqtt.timezone }}
+              value: {{ .Values.statefulset.timezone }}
           {{- if .Values.statefulset.secrets.name }}
           envFrom:
             - secretRef:
                 name: {{ .Values.statefulset.secrets.name }}
           {{- end }}
           ports:
-            - containerPort: {{ .Values.zigbee2mqtt.frontend.port }}
+            - containerPort: {{ .Values.statefulset.frontend.port }}
               name: web
               protocol: TCP
           {{- with .Values.statefulset.livenessProbe }}
@@ -79,12 +77,9 @@ spec:
       {{- with .Values.statefulset.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
-        - name: config-volume
-          configMap:
-            name: {{ include "zigbee2mqtt.fullname" . }}
         {{- if not .Values.statefulset.storage.enabled }}
         - name: data-volume
-          emptyDir: { }
+          emptyDir: {}
         {{- end }}
   {{- if .Values.statefulset.storage.enabled }}
   volumeClaimTemplates:

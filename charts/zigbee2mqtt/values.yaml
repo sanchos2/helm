@@ -81,6 +81,11 @@ statefulset:
 # -- Ingress configuration. Zigbee2mqtt does use webssockets, which is not part of the Ingress standart settings.
 # most of the popular ingresses supports them through annotations. Please check https://www.zigbee2mqtt.io/guide/installation/08_kubernetes.html
 # for examples.
+  # -- Timezone
+  timezone: "Europe/Moscow"
+  # -- Application port
+  frontend:
+    port: 8080
 ingress:
   # -- When enabled a new Ingress will be created
   enabled: false
