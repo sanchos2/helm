@@ -31,26 +31,4 @@ entries:
     urls:
     - https://github.com/sanchos2/helm/releases/download/mosquitto-0.1.0/mosquitto-0.1.0.tgz
     version: 0.1.0
-  zigbee2mqtt:
-  - apiVersion: v2
-    appVersion: 1.42.0
-    created: "2024-12-12T16:16:13.569082855Z"
-    description: Bridges events and allows you to control your Zigbee devices via
-      MQTT
-    digest: 3c03bea03cb6d910676b5c92715ac35c7a98e521ed9cbc3d8821f74daa5bd846
-    home: https://github.com/Koenkk/zigbee2mqtt
-    icon: https://www.zigbee2mqtt.io/logo.png
-    keywords:
-    - zigbee
-    - mqtt
-    - home-assistant
-    kubeVersion: '>=1.26.0-0'
-    maintainers:
-    - name: Koen Kanters
-    name: zigbee2mqtt
-    sources:
-    - https://github.com/Koenkk/zigbee2mqtt
-    urls:
-    - https://github.com/sanchos2/helm/releases/download/zigbee2mqtt-1.42.0/zigbee2mqtt-1.42.0.tgz
-    version: 1.42.0
 generated: "2024-12-12T16:16:13.569132699Z"
