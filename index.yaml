@@ -71,6 +71,17 @@ entries:
     urls:
     - https://github.com/sanchos2/helm/releases/download/mosquitto-0.1.0/mosquitto-0.1.0.tgz
     version: 0.1.0
+  search-total-human:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-11-04T14:42:51.787618686Z"
+    description: Weekly Search Total Human monitor as a CronJob
+    digest: 9367ca082f0e613c164265aa532ca722211c682a3746b8e3a91ba63d549a2409
+    name: search-total-human
+    type: application
+    urls:
+    - https://github.com/sanchos2/helm/releases/download/search-total-human-0.1.0/search-total-human-0.1.0.tgz
+    version: 0.1.0
   zigbee2mqtt:
   - apiVersion: v2
     appVersion: 2.14.2
@@ -114,4 +125,4 @@ entries:
     urls:
     - https://github.com/sanchos2/helm/releases/download/zigbee2mqtt-1.42.0/zigbee2mqtt-1.42.0.tgz
     version: 1.42.0
-generated: "2026-10-05T16:06:35.036266455Z"
+generated: "2026-11-04T14:42:51.787639823Z"
