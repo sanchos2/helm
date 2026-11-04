@@ -1,0 +1,75 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "search-total-human.fullname" . }}
+  labels:
+    {{- include "search-total-human.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  timeZone: {{ .Values.timeZone | quote }}
+  concurrencyPolicy: {{ .Values.concurrencyPolicy }}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.backoffLimit }}
+      ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+      activeDeadlineSeconds: {{ .Values.activeDeadlineSeconds }}
+      template:
+        metadata:
+          labels:
+            {{- include "search-total-human.selectorLabels" . | nindent 12 }}
+        spec:
+          restartPolicy: {{ .Values.restartPolicy }}
+          automountServiceAccountToken: false
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: monitor
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              args:
+                {{- toYaml .Values.monitorArgs | nindent 16 }}
+              env:
+                - name: GIT_REPO_URL
+                  value: {{ .Values.git.repoURL | quote }}
+                - name: GIT_BRANCH
+                  value: {{ .Values.git.branch | quote }}
+                - name: GIT_USER_NAME
+                  value: {{ .Values.git.userName | quote }}
+                - name: GIT_USER_EMAIL
+                  value: {{ .Values.git.userEmail | quote }}
+                - name: GIT_SSH_KEY_FILE
+                  value: /secrets/id_ed25519
+                - name: HOME
+                  value: /home/app
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+              volumeMounts:
+                - name: git-ssh
+                  mountPath: /secrets
+                  readOnly: true
+          volumes:
+            - name: git-ssh
+              secret:
+                secretName: {{ include "search-total-human.gitSecretName" . }}
+                defaultMode: 0440
+                items:
+                  - key: id_ed25519
+                    path: id_ed25519
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

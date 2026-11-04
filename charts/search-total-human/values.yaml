@@ -1,0 +1,55 @@
+image:
+  repository: sanchos2/search-total-human
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Воскресенье, 21:00 UTC. timeZone требует Kubernetes 1.27+.
+schedule: "0 21 * * 0"
+timeZone: "UTC"
+
+concurrencyPolicy: Forbid
+successfulJobsHistoryLimit: 3
+failedJobsHistoryLimit: 3
+backoffLimit: 1
+restartPolicy: OnFailure
+# Поиск листает выдачу без лимита, поэтому запас по времени большой.
+activeDeadlineSeconds: 10800
+ttlSecondsAfterFinished: 86400
+
+git:
+  repoURL: git@github.com:antonlyaksa-byte/search-total-human.git
+  branch: master
+  userName: search-total-human-cron
+  userEmail: search-total-human-cron@users.noreply.github.com
+  # Пустое имя = <release>-git. Ключ в Secret под именем id_ed25519.
+  secretName: ""
+  # Не коммитьте ключ. На установке:
+  #   helm upgrade --install search-total-human ./deploy/helm/search-total-human \
+  #     --set-file git.privateKey=deploy/keys/id_ed25519
+  privateKey: ""
+
+# Аргументы monitor.py. --push коммитит JSON и дашборд и пушит origin/<branch>.
+monitorArgs:
+  - --push
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

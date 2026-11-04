@@ -1,0 +1,7 @@
+CronJob {{ include "search-total-human.fullname" . }} : {{ .Values.schedule }} ({{ .Values.timeZone }}).
+
+Приватный ключ монтируется из Secret {{ include "search-total-human.gitSecretName" . }} в /secrets/id_ed25519.
+Публичный ключ добавьте в GitHub → Settings → Deploy keys репозитория и включите Allow write access.
+
+Проверка без ожидания расписания:
+  kubectl -n {{ .Release.Namespace }} create job --from=cronjob/{{ include "search-total-human.fullname" . }} {{ include "search-total-human.fullname" . }}-manual
