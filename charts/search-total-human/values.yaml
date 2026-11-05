@@ -14,8 +14,8 @@ timeZone: "UTC"
 concurrencyPolicy: Forbid
 successfulJobsHistoryLimit: 3
 failedJobsHistoryLimit: 3
-backoffLimit: 1
-restartPolicy: OnFailure
+backoffLimit: 0
+restartPolicy: Never
 # Поиск листает выдачу без лимита, поэтому запас по времени большой.
 activeDeadlineSeconds: 10800
 ttlSecondsAfterFinished: 86400
